@@ -1,33 +1,32 @@
 # GitHub Summary Skill
 
-A Claude Code skill that generates AI-synthesised summaries of your GitHub activity. Get a natural language narrative of your issues, pull requests, and commits with inline URL references.
+A skill that generates AI-synthesised summaries of your GitHub activity. Works with **both Claude Code and GitHub Copilot CLI**.
 
 ## Features
 
-- **AI-written summaries** - Not just lists, but contextual narratives explaining what you worked on and why
-- **Multiple data sources** - Works with GitHub MCP Server or gh CLI (auto-detects and lets you choose)
+- **Cross-platform** - Works with Claude Code and GitHub Copilot CLI
+- **AI-written summaries** - Contextual narratives explaining what you worked on and why
+- **Multiple data sources** - Works with GitHub MCP Server or gh CLI (auto-detects)
 - **Rich context** - Fetches comments, linked PRs, review feedback, and sub-issues
 - **TLDR section** - Quick bullet points for scanning
-- **Flexible output** - Saves to your preferred location with proper formatting
+- **Flexible output** - Saves to your preferred location
 
 ## Installation
 
-### Option 1: Copy to your project
+### For Claude Code
 
 ```bash
-# Create the skills directory if it doesn't exist
 mkdir -p .claude/skills/github-summary
-
-# Download the skill
 curl -o .claude/skills/github-summary/SKILL.md \
   https://raw.githubusercontent.com/gokhanarkan/claude-github-summary/main/SKILL.md
 ```
 
-### Option 2: Clone and symlink
+### For GitHub Copilot CLI
 
 ```bash
-git clone https://github.com/gokhanarkan/claude-github-summary.git
-ln -s $(pwd)/claude-github-summary/SKILL.md .claude/skills/github-summary/SKILL.md
+mkdir -p .github/skills/github-summary
+curl -o .github/skills/github-summary/SKILL.md \
+  https://raw.githubusercontent.com/gokhanarkan/claude-github-summary/main/SKILL.md
 ```
 
 ## Prerequisites
@@ -36,7 +35,7 @@ You need at least one of these configured:
 
 ### GitHub MCP Server (Recommended)
 
-Configure in your Claude Code settings. Provides richer context and faster queries.
+Configure in your Claude Code or Copilot settings. Provides richer context and faster queries.
 
 ### GitHub CLI
 
@@ -51,68 +50,82 @@ gh auth login
 
 ## Usage
 
-Simply invoke the skill in Claude Code:
+### Claude Code
 
-```
+```bash
 /github-summary
 ```
 
-Or use natural language:
+Or natural language:
 
-```
+```bash
 Summarise my GitHub activity for the last two weeks
 ```
 
-### Interactive Flow
+### GitHub Copilot CLI
+
+```bash
+/github-summary
+```
+
+Or reference the skill:
+
+```bash
+skill(github-summary)
+```
+
+## Interactive Flow
+
+Both tools follow the same flow:
 
 1. **Data source selection** - If both MCP and gh CLI are available, you choose which to use
 2. **Organisation selection** - Pick from your organisations or search all
 3. **Time period** - Last 7/14/30 days, this month, or custom range
-4. **Summary generation** - Claude fetches data, synthesises, and writes the summary
+4. **Summary generation** - AI fetches data, synthesises, and outputs the summary
+
+## Output Styles
+
+The same skill produces different output styles depending on the AI:
+
+### Claude Code Output
+
+Natural language narrative with inline URLs:
+
+```markdown
+## Overview
+
+This week focused on authentication improvements. I identified a session
+handling bug affecting Safari users (#234), implemented a fix using PKCE
+flow (#312), and updated documentation to reflect the changes...
+```
+
+### GitHub Copilot Output
+
+Structured tables with metrics:
+
+```
+📊 Overview
+┌────────────────┬───────┐
+│ Metric         │ Count │
+├────────────────┼───────┤
+│ Issues Created │ 7     │
+│ Pull Requests  │ 7     │
+│ PRs Reviewed   │ 2     │
+└────────────────┴───────┘
+
+🔀 Pull Requests Authored
+┌───────┬──────────────┬─────────────────────────────┐
+│ PR    │ Repository   │ Title                       │
+├───────┼──────────────┼─────────────────────────────┤
+│ #312  │ api-gateway  │ Implement OAuth 2.0 PKCE    │
+└───────┴──────────────┴─────────────────────────────┘
+```
+
+Both formats are useful - Claude's narrative is better for status updates and reports, Copilot's tables are great for quick scanning.
 
 ## Example Output
 
-```markdown
-# GitHub Summary
-
-**Period:** 2 January 2026 to 9 January 2026
-**Organisation:** acme-corp
-
----
-
-## TLDR
-
-- Shipped new authentication flow with OAuth 2.0 PKCE support, improving security for mobile clients
-- Merged 5 PRs across api-gateway and web-dashboard repositories
-- Resolved critical session handling bug affecting 15% of users on Safari
-- Reviewed 3 PRs including the new rate limiting middleware
-
----
-
-## Overview
-
-This week focused on authentication improvements and bug fixes across the platform.
-The main initiative was implementing OAuth 2.0 PKCE for our mobile applications...
-
-## Issues
-
-I opened [#234: Safari users experiencing random logouts](https://github.com/acme-corp/api-gateway/issues/234)
-which had been affecting approximately 15% of our Safari user base...
-
-## Pull Requests
-
-### Authored
-
-The main authentication work landed in [#312: Implement OAuth 2.0 PKCE flow](https://github.com/acme-corp/api-gateway/pull/312)
-which adds PKCE support to our OAuth implementation...
-
-### Reviewed
-
-I reviewed [#320: Add rate limiting middleware](https://github.com/acme-corp/api-gateway/pull/320) by @alice,
-which implements Redis-backed rate limiting...
-```
-
-See [examples/sample-output.md](examples/sample-output.md) for a complete example.
+See [examples/sample-output.md](examples/sample-output.md) for a complete Claude-style example.
 
 ## Configuration
 
@@ -135,21 +148,23 @@ You can modify `SKILL.md` to:
 
 1. **Discovery phase** - Searches for issues you created AND issues you're involved in (assigned, commented, mentioned)
 2. **Deep context fetch** - For each item, fetches comments, reviews, linked PRs, timeline events
-3. **AI synthesis** - Claude analyses all context and writes a coherent narrative
-4. **Output** - Saves markdown file with TLDR, Overview, Issues, PRs, and Commits sections
+3. **AI synthesis** - AI analyses all context and writes the summary
+4. **Output** - Saves markdown file or displays in terminal
 
 ## Contributing
 
 Contributions welcome! Please:
 
-1. Test changes with both MCP Server and gh CLI
-2. Ensure the skill works across different repository structures
-3. Update examples if changing output format
+1. Test changes with both Claude Code and GitHub Copilot CLI
+2. Test with both MCP Server and gh CLI data sources
+3. Ensure the skill works across different repository structures
+4. Update examples if changing output format
 
 ## Related Projects
 
 - [minimal-second-brain](https://github.com/gokhanarkan/minimal-second-brain) - Knowledge management template with Claude integration
 - [awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills) - Community collection of Claude skills
+- [GitHub Copilot Skills Docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills)
 
 ## License
 
