@@ -231,16 +231,47 @@ Using all the collected data, write a natural language summary document.
 The output must be natural language paragraphs that tell a story. This is a summary for humans to read, not a data dump.
 
 **DO NOT:**
+
 - Use ASCII tables or box-drawing characters
 - Create bullet-point lists of PRs/issues (except TLDR)
 - Output metrics tables or counts
 - List items without context or explanation
+- Use sub-headers within sections (no "### Bug Fixes" under "## Issues")
+- Group items with bold labels like "**Repository X:**"
 
 **DO:**
+
 - Write flowing paragraphs that explain what happened and why
 - Connect related items into coherent narratives
 - Reference URLs inline within sentences
 - Explain the significance, not just the facts
+
+**EXAMPLE - BAD (DO NOT DO THIS):**
+
+```bash
+## Pull Requests
+
+### Authored
+
+**acme-corp/api-gateway (4 PRs merged)**
+- Fix: Token refresh logic — Fixed token expiry handling...
+- Feature: Add rate limiting configuration...
+
+**acme-corp/web-app (2 PRs merged)**
+- Update: Migrate to new auth provider...
+```
+
+**EXAMPLE - GOOD (DO THIS INSTEAD):**
+
+```bash
+## Pull Requests
+
+### Authored
+
+I focused heavily on the API gateway this week. The most significant fix addressed [token refresh logic](url), which was causing intermittent authentication failures when tokens expired mid-request. This required understanding how the OAuth flow handles edge cases around clock skew. I also submitted [rate limiting configuration improvements](url) to give operators more control over throttling behaviour.
+
+On the web application, I completed the [auth provider migration](url) that had been planned since Q3. The new provider offers better SSO support and simplified our session management code.
+```
 
 1. **Voice:** Write in first person ("I worked on...", "I submitted...")
 
@@ -290,34 +321,35 @@ The output must be natural language paragraphs that tell a story. This is a summ
 
 ## TLDR
 
-- [Key accomplishment 1 with outcome/impact]
-- [Key accomplishment 2 with outcome/impact]
-- [Key accomplishment 3 with outcome/impact]
-- [Optional: 4th or 5th point if significant]
+- Fixed critical bug in URL transformation affecting readme rendering
+- Merged 4 PRs improving API stability and documentation
+- Reviewed 2 PRs for new feature implementations
 
 ---
 
 ## Overview
 
-[1-2 paragraph summary of main themes, focus areas, and highlights from this period]
+This week centred on stability improvements and documentation clarity. The main focus was resolving URL handling issues in the registry service that had been causing broken links in rendered readmes. I also contributed to the ongoing API modernisation effort and provided review feedback on upcoming features.
 
 ## Issues
 
-[Narrative paragraphs about issues opened, with context about why they were created, key discussions, linked PRs, and resolution status]
+I opened [#234: Blob URLs incorrectly generated for relative paths](url) after noticing broken images in several MCP server readmes. Investigation revealed the transformation logic assumed absolute URLs, but many repositories use relative paths for their assets. This led directly to the fix in PR #312.
 
 ## Pull Requests
 
 ### Authored
 
-[Narrative about PRs you submitted, what they addressed, review feedback received, merge status]
+The URL transformation fix required careful handling of edge cases. In [#312: Fix blob URL generation](url), I updated the path resolution to detect relative URLs and prepend the repository's raw content base. The review feedback highlighted a missed edge case with nested directories, which I addressed in a follow-up commit.
+
+I also submitted [#318: Update API deprecation notices](url) to clarify migration paths for external consumers. This involved updating both code comments and the public documentation.
 
 ### Reviewed
 
-[Narrative about PRs you reviewed, your feedback, decisions made]
+I reviewed [#320: Add rate limiting middleware](url), suggesting improvements to the backoff algorithm. The original implementation used fixed delays, but I recommended exponential backoff to better handle burst traffic.
 
 ## Commits
 
-[Brief mentions of notable direct commits not covered by PRs above]
+A few documentation fixes went directly to main without PRs: typo corrections in the contributing guide and updated contact information in the security policy.
 
 ---
 

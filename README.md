@@ -85,28 +85,30 @@ Both tools follow the same flow:
 
 ## Output Style
 
-The skill is designed to produce **natural language narratives**, not tables or bullet lists. The writing guidelines explicitly instruct the AI to:
+The skill is designed to produce **natural language narratives**, not tables or bullet lists. The writing guidelines include explicit examples of what to avoid and what to produce.
 
-- Write flowing paragraphs that tell a story
-- Reference URLs inline within sentences
-- Explain significance and context, not just list facts
-- Use the TLDR section as the only place for bullet points
-
-Example output:
+**Claude Code** follows these instructions precisely, producing flowing paragraphs:
 
 ```markdown
-## Overview
-
-This week focused on authentication improvements. I identified a session
-handling bug affecting Safari users ([#234](url)), implemented a fix using
-PKCE flow ([#312](url)), and updated documentation to reflect the changes.
-
 ## Issues
 
 I opened [#234: Safari users experiencing random logouts](url) after
 receiving multiple user reports. Investigation revealed the root cause
-was Safari's ITP blocking our session cookies...
+was Safari's ITP blocking our session cookies. This led directly to
+the fix in PR #312, where I implemented PKCE flow...
 ```
+
+**GitHub Copilot CLI** produces useful but more structured output:
+
+```markdown
+## Pull Requests Authored & Merged
+
+**acme-corp/api-gateway (4 PRs merged)**
+- Fix: Token refresh logic — Fixed token expiry handling...
+- Feature: Add rate limiting configuration...
+```
+
+Both outputs contain accurate information. Claude produces true narrative prose; Copilot gravitates toward structured formats despite instructions. Choose based on your preference.
 
 ## Example Output
 
