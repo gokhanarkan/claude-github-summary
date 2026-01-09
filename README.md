@@ -83,45 +83,30 @@ Both tools follow the same flow:
 3. **Time period** - Last 7/14/30 days, this month, or custom range
 4. **Summary generation** - AI fetches data, synthesises, and outputs the summary
 
-## Output Styles
+## Output Style
 
-The same skill produces different output styles depending on the AI:
+The skill is designed to produce **natural language narratives**, not tables or bullet lists. The writing guidelines explicitly instruct the AI to:
 
-### Claude Code Output
+- Write flowing paragraphs that tell a story
+- Reference URLs inline within sentences
+- Explain significance and context, not just list facts
+- Use the TLDR section as the only place for bullet points
 
-Natural language narrative with inline URLs:
+Example output:
 
 ```markdown
 ## Overview
 
 This week focused on authentication improvements. I identified a session
-handling bug affecting Safari users (#234), implemented a fix using PKCE
-flow (#312), and updated documentation to reflect the changes...
+handling bug affecting Safari users ([#234](url)), implemented a fix using
+PKCE flow ([#312](url)), and updated documentation to reflect the changes.
+
+## Issues
+
+I opened [#234: Safari users experiencing random logouts](url) after
+receiving multiple user reports. Investigation revealed the root cause
+was Safari's ITP blocking our session cookies...
 ```
-
-### GitHub Copilot Output
-
-Structured tables with metrics:
-
-```
-📊 Overview
-┌────────────────┬───────┐
-│ Metric         │ Count │
-├────────────────┼───────┤
-│ Issues Created │ 7     │
-│ Pull Requests  │ 7     │
-│ PRs Reviewed   │ 2     │
-└────────────────┴───────┘
-
-🔀 Pull Requests Authored
-┌───────┬──────────────┬─────────────────────────────┐
-│ PR    │ Repository   │ Title                       │
-├───────┼──────────────┼─────────────────────────────┤
-│ #312  │ api-gateway  │ Implement OAuth 2.0 PKCE    │
-└───────┴──────────────┴─────────────────────────────┘
-```
-
-Both formats are useful - Claude's narrative is better for status updates and reports, Copilot's tables are great for quick scanning.
 
 ## Example Output
 

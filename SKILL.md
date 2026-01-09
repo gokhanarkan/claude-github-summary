@@ -118,6 +118,7 @@ search_commits(q: "author:<username> org:<org> author-date:<start>..<end>")
 **MCP Fallback (if search tools unavailable):**
 
 If only `list_issues`/`list_pull_requests` are available:
+
 - These tools may use `since` which filters by *update* time, not *creation* time
 - They may not filter by author
 - You MUST manually filter results by author and creation date after fetching
@@ -225,31 +226,49 @@ Using all the collected data, write a natural language summary document.
 
 **Writing Guidelines:**
 
+**CRITICAL: Write narrative prose, NOT tables or bullet lists.**
+
+The output must be natural language paragraphs that tell a story. This is a summary for humans to read, not a data dump.
+
+**DO NOT:**
+- Use ASCII tables or box-drawing characters
+- Create bullet-point lists of PRs/issues (except TLDR)
+- Output metrics tables or counts
+- List items without context or explanation
+
+**DO:**
+- Write flowing paragraphs that explain what happened and why
+- Connect related items into coherent narratives
+- Reference URLs inline within sentences
+- Explain the significance, not just the facts
+
 1. **Voice:** Write in first person ("I worked on...", "I submitted...")
 
 2. **Structure:**
-   - TLDR section first (3-5 bullet points)
+   - TLDR section first (3-5 bullet points only - this is the ONLY place for bullets)
    - Brief Overview paragraph summarising the main themes/focus areas
-   - Issues section (Priority 1 - most context-rich)
-   - Pull Requests section with Authored and Reviewed subsections (Priority 2)
-   - Commits section for notable direct commits (Priority 3)
+   - Issues section (Priority 1 - most context-rich) - PARAGRAPHS, not lists
+   - Pull Requests section with Authored and Reviewed subsections (Priority 2) - PARAGRAPHS
+   - Commits section for notable direct commits (Priority 3) - PARAGRAPHS
 
 3. **TLDR Section:**
-   - 3-5 bullet points maximum
+   - 3-5 bullet points maximum (the ONLY bullets in the document)
    - Focus on outcomes and impact, not activities
    - Use action verbs: "Fixed", "Merged", "Implemented", "Reviewed", "Shipped"
    - Include quantitative data where meaningful (e.g., "Merged 4 PRs", "Resolved 3 critical bugs")
    - Keep each bullet to one line
    - Prioritise the most significant accomplishments
 
-4. **URLs:** Reference URLs inline within sentences, not as separate bullet points
-   - Good: "I opened [#1234: Safari login failures](url) to address..."
-   - Avoid: "- Issue #1234: Safari login failures [link]"
+4. **URLs:** Reference URLs inline within sentences, not as separate items
+   - Good: "I opened [#1234: Safari login failures](url) to address user reports of..."
+   - Bad: "- Issue #1234: Safari login failures [link]"
+   - Bad: "| #1234 | Safari login failures | Open |"
 
-5. **Context:** Explain the significance and context, not just list items
+5. **Context:** Explain the significance and context in prose
    - Mention why issues were opened
    - Describe what PRs addressed and key feedback received
    - Connect related items (issues linked to PRs, discussions that led to decisions)
+   - Write complete sentences that flow into paragraphs
 
 6. **Grouping:** Group by theme or project when natural, maintain chronological order within groups
 
